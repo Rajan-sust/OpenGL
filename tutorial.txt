@@ -1,1 +1,3 @@
 http://www.codebind.com/linux-tutorials/install-opengl-ubuntu-linux/
+tutorial:
+https://en.wikibooks.org/wiki/OpenGL_Programming/GLStart/Tut3
