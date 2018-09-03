@@ -1,106 +1,98 @@
+#include <iostream>
 #include <GL/glut.h>
-#include <bits/stdc++.h>
+
 using namespace std;
 
-double x1,y1,x2,y2;
+double x1, y1, x2, y2;
 
-void setpixel(GLint xCoordinate, GLint yCoordinate) {
-  glBegin(GL_POINTS);
-  glVertex2i(xCoordinate, yCoordinate);
-  glEnd();
-  glFlush();
-}
-
-
-
-void Init() {
-  
-    glClearColor(0.0,0.0,0.0,0);
-    gluOrtho2D(-100.0 , 100.0 , -100.0 , 100.0);
-}
-
-void simpleLine(void)
+void Init()
 {
-    double dx = x2-x1;
-    double dy = y2-y1;
 
+    glClearColor(0.0, 0.0, 0.0, 0);
+    glColor3f(0.14, 0.98, 0.81);
+    gluOrtho2D(-100.0, 100.0, -100.0, 100.0);
+}
 
-    double x = x1,y = y1;
+void setPixel(GLint x, GLint y)
+{
 
-    setpixel((x+0.5),(y+0.5));
+    glBegin(GL_POINTS);
+    glVertex2i(x, y);
+    glEnd();
+    glFlush();
+}
 
-    if(dx==0.0)
-    {
+void doPlot(void)
+{
 
-        while(y<y2){
-            y+=1.0;
-            setpixel((x+0.5),(y+0.5));
+    double dx = x2 - x1;
+    double dy = y2 - y1;
+
+    double x = x1, y = y1;
+
+    setPixel((x + 0.5), (y + 0.5));
+
+    if (dx == 0.0) {
+
+        while (y < y2) {
+            y += 1.0;
+            setPixel((x + 0.5), (y + 0.5));
         }
     }
-    else if(dy==0.0)
-    {
-        while(x<x2){
-            x+=1.0;
-            setpixel((x+0.5),(y+0.5));
+
+    else if (dy == 0.0) {
+        while (x < x2) {
+            x += 1.0;
+            setPixel((x + 0.5), (y + 0.5));
         }
     }
-    else{
+    else {
 
-        double slope = dy/dx;
-        double b = y - slope*x;
+        double m = dy / dx;
+        double b = y - m * x;
 
-        if(abs(slope)>=1.0) {
-            
-            while(x<x2)
-            {
-                x = x + (1.0)/slope;
+        if (abs(m) > 1.0) {
+
+            while (x < x2) {
+
+                x = x + (1.0) / m;
                 y = y + 1.0;
-                setpixel((x+0.5),(y+0.5));
+                setPixel((x + 0.5), (y + 0.5));
             }
+        }
+        else {
+            while (x < x2) {
 
-        }else{
-
-            while(x<x2)
-            {
                 x = x + 1.0;
-                y = y + slope;
-                setpixel((x+0.5),(y+0.5));
-
+                y = y + m;
+                setPixel((x + 0.5), (y + 0.5));
             }
-
-
         }
     }
-
 }
 
-
-int main(int argc, char **argv)
+void scanInput()
 {
-   
 
+    cout << "Enter Point1 (x1,y1) : ";
+    cin >> x1 >> y1;
+    cout << "\n";
+    cout << "Enter Point2 (x2,y2) : ";
+    cin >> x2 >> y2;
+    cout << "\n";
+}
 
-   
-    cin>>x1>>y1;
+int main(int argc, char** argv)
+{
+    scanInput();
 
-   
-    cin>>x2>>y2;
-
-
-
-    glutInit(&argc,argv);
-    
+    glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    
-    glutInitWindowPosition(0,0);
-    glutInitWindowSize(300,300);
-   
-    glutCreateWindow("DDA Algorithm");
-  
+    glutInitWindowPosition(0, 0);
+    glutInitWindowSize(500, 500);
+    glutCreateWindow("DDA LineDrawing");
     Init();
- 
-    glutDisplayFunc(simpleLine);
-    
+    glutDisplayFunc(doPlot);
     glutMainLoop();
 
     return 0;
